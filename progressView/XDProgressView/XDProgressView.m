@@ -56,16 +56,16 @@
         CGContextTranslateCTM(ctx, 0, -rect.size.height);
         CGContextDrawImage(ctx, CGRectMake(0, 0, kWidth, kHeight), self.trackImage.CGImage);
     }
-    if (self.progressImage) { // progressImage
+//    if (self.progressImage) { // progressImage
 //        CGContextScaleCTM(ctx, 1, -1);
 //        CGContextTranslateCTM(ctx, 0, -rect.size.height);
 //        CGContextDrawImage(ctx, rect, self.progressImage.CGImage);
-    } else  {                 // progressTintColor
-        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:self.cornerRadius];
-        CGContextAddPath(ctx, path.CGPath);
-        CGContextSetFillColorWithColor(ctx, self.progressTintColor.CGColor);
-        CGContextFillPath(ctx);
-    }
+//    } else  {                 // progressTintColor
+//        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:self.cornerRadius];
+//        CGContextAddPath(ctx, path.CGPath);
+//        CGContextSetFillColorWithColor(ctx, self.progressTintColor.CGColor);
+//        CGContextFillPath(ctx);
+//    }
 }
 
 - (void)layoutSublayers {
@@ -79,21 +79,13 @@
 - (void)setProgress:(float)progress animated:(BOOL)animated {
     _isAnimated = animated;
     _progress = progress > 1.0 ? 1.0 : progress < 0.0 ? 0.0 : progress;
-    if (animated) {
-        if (self.progressImage) {
-            self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight); // implicit animation
-        } else { // animatied progressTintColor
-            // TODO
-        }
-        
-        
-    } else {
-        if (self.progressImage) {
-            [CATransaction begin];
-            [CATransaction setDisableActions:YES]; // close implicit animation
-            self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
-            [CATransaction commit];
-        }
+    if (animated) { // implicit animation
+        self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
+    } else {        // close implicit animation
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
+        [CATransaction commit];
     }
 }
 
@@ -119,6 +111,11 @@
 - (void)setText:(NSString *)text {
     _text = text;
     self.textLayer.string = text;
+}
+
+- (void)setProgressTintColor:(UIColor *)progressTintColor {
+    _progressTintColor = progressTintColor;
+    [self setProgress:self.progress animated:NO];
 }
 
 - (void)setProgressImage:(UIImage *)progressImage {
@@ -171,8 +168,9 @@
 - (CALayer *)imageLayer {
     if (!_imageLayer) {
         _imageLayer = [CALayer layer];
-        _imageLayer.frame = CGRectMake(0, 0, self.progress * kWidth, kHeight);;
-        _imageLayer.contents = (__bridge id)(self.progressImage.CGImage);
+        _imageLayer.frame = CGRectMake(0, 0, self.progress * kWidth, kHeight);
+        if (self.progressImage) _imageLayer.contents = (__bridge id)(self.progressImage.CGImage);
+        if (self.progressTintColor) _imageLayer.backgroundColor = self.progressTintColor.CGColor;
         [self addSublayer:_imageLayer];
     }
     return _imageLayer;

@@ -38,10 +38,10 @@
     _progressView = [[XDProgressView alloc] initWithFrame:(CGRect){0, 0, 200, 30}];
     _progressView.center = self.view.center;
     _progressView.progress = 0.3;
-    _progressView.progressImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _progressView.trackImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
 
-//    _progressView.progressTintColor = [UIColor greenColor];
+//    _progressView.progressImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _progressView.progressTintColor = [UIColor greenColor];
 //    _progressView.trackTintColor = [UIColor greenColor];
     _progressView.text = @"xindong";
     _progressView.textAlignment = NSTextAlignmentCenter;
