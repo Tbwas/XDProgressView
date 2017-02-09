@@ -13,6 +13,8 @@
 		D82C856F1E4CB95100C37F92 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D82C856D1E4CB95100C37F92 /* Main.storyboard */; };
 		D82C85711E4CB95100C37F92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D82C85701E4CB95100C37F92 /* Assets.xcassets */; };
 		D82C85741E4CB95100C37F92 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D82C85721E4CB95100C37F92 /* LaunchScreen.storyboard */; };
+		D82C857E1E4CB95C00C37F92 /* XDProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D82C857D1E4CB95C00C37F92 /* XDProgressView.m */; };
+		D82C85861E4CCA5F00C37F92 /* progressImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D82C85851E4CCA5F00C37F92 /* progressImage.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,9 @@
 		D82C85701E4CB95100C37F92 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D82C85731E4CB95100C37F92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D82C85751E4CB95100C37F92 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D82C857C1E4CB95C00C37F92 /* XDProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XDProgressView.h; sourceTree = "<group>"; };
+		D82C857D1E4CB95C00C37F92 /* XDProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XDProgressView.m; sourceTree = "<group>"; };
+		D82C85851E4CCA5F00C37F92 /* progressImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = progressImage.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +67,8 @@
 				D82C85681E4CB95100C37F92 /* AppDelegate.m */,
 				D82C856A1E4CB95100C37F92 /* ViewController.h */,
 				D82C856B1E4CB95100C37F92 /* ViewController.m */,
+				D82C85851E4CCA5F00C37F92 /* progressImage.png */,
+				D82C857B1E4CB95C00C37F92 /* XDProgressView */,
 				D82C856D1E4CB95100C37F92 /* Main.storyboard */,
 				D82C85701E4CB95100C37F92 /* Assets.xcassets */,
 				D82C85721E4CB95100C37F92 /* LaunchScreen.storyboard */,
@@ -77,6 +84,15 @@
 				D82C85651E4CB95100C37F92 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D82C857B1E4CB95C00C37F92 /* XDProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				D82C857C1E4CB95C00C37F92 /* XDProgressView.h */,
+				D82C857D1E4CB95C00C37F92 /* XDProgressView.m */,
+			);
+			path = XDProgressView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,6 +153,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D82C85861E4CCA5F00C37F92 /* progressImage.png in Resources */,
 				D82C85741E4CB95100C37F92 /* LaunchScreen.storyboard in Resources */,
 				D82C85711E4CB95100C37F92 /* Assets.xcassets in Resources */,
 				D82C856F1E4CB95100C37F92 /* Main.storyboard in Resources */,
@@ -153,6 +170,7 @@
 				D82C856C1E4CB95100C37F92 /* ViewController.m in Sources */,
 				D82C85691E4CB95100C37F92 /* AppDelegate.m in Sources */,
 				D82C85661E4CB95100C37F92 /* main.m in Sources */,
+				D82C857E1E4CB95C00C37F92 /* XDProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
