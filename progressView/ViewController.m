@@ -17,14 +17,17 @@
 
 @implementation ViewController {
     UIProgressView *pp;
+    CGFloat _progress;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    _progressView.progress += 0.05;
+    _progress += 0.05;
     if (_progressView.progress > 0.99) {
         _progressView.progress = 0.0;
     }
-    [pp setProgress:_progressView.progress animated:YES];
+    [pp setProgress:_progress animated:YES];
+    [self.progressView setProgress:_progress animated:NO];
+//    self.progressView.progress += _progress;
     
 }
 
@@ -34,14 +37,17 @@
     
     _progressView = [[XDProgressView alloc] initWithFrame:(CGRect){0, 0, 200, 30}];
     _progressView.center = self.view.center;
-    _progressView.progress = 0.0;
+    _progressView.progress = 0.3;
     _progressView.progressImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _progressView.trackImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+
 //    _progressView.progressTintColor = [UIColor greenColor];
-    _progressView.trackTintColor = [UIColor lightGrayColor];
+//    _progressView.trackTintColor = [UIColor greenColor];
     _progressView.text = @"xindong";
     _progressView.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_progressView];
     
+#warning -- trackImage and progressImage animated
     
     pp = [[UIProgressView alloc] initWithFrame:CGRectMake(100, 100, 200, 30)];
     pp.progress = 0.4;

@@ -33,8 +33,8 @@
     CATextLayer *_textLayer;
     CAGradientLayer *_gradientLayer;
     CALayer *_imageLayer;
-    BOOL _didLayout;
     BOOL _isAnimated;
+    BOOL _didLayout;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -51,15 +51,15 @@
 
 - (void)drawInContext:(CGContextRef)ctx {
     CGRect rect = CGRectMake(0, 0, self.progress * kWidth, kHeight);
-    if (self.trackImage) {    // trackImage
+    if (self.trackImage) {   // trackImage
         CGContextScaleCTM(ctx, 1, -1);
         CGContextTranslateCTM(ctx, 0, -rect.size.height);
-        CGContextDrawImage(ctx, rect, self.trackImage.CGImage);
+        CGContextDrawImage(ctx, CGRectMake(0, 0, kWidth, kHeight), self.trackImage.CGImage);
     }
     if (self.progressImage) { // progressImage
-        CGContextScaleCTM(ctx, 1, -1);
-        CGContextTranslateCTM(ctx, 0, -rect.size.height);
-        CGContextDrawImage(ctx, rect, self.progressImage.CGImage);
+//        CGContextScaleCTM(ctx, 1, -1);
+//        CGContextTranslateCTM(ctx, 0, -rect.size.height);
+//        CGContextDrawImage(ctx, rect, self.progressImage.CGImage);
     } else  {                 // progressTintColor
         UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:self.cornerRadius];
         CGContextAddPath(ctx, path.CGPath);
@@ -78,8 +78,23 @@
 
 - (void)setProgress:(float)progress animated:(BOOL)animated {
     _isAnimated = animated;
-    self.progress = progress;
-    // TO DO
+    _progress = progress > 1.0 ? 1.0 : progress < 0.0 ? 0.0 : progress;
+    if (animated) {
+        if (self.progressImage) {
+            self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight); // implicit animation
+        } else { // animatied progressTintColor
+            // TODO
+        }
+        
+        
+    } else {
+        if (self.progressImage) {
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES]; // close implicit animation
+            self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
+            [CATransaction commit];
+        }
+    }
 }
 
 - (void)setTextFont:(UIFont *)font {
@@ -96,9 +111,19 @@
     [self setNeedsDisplay];
 }
 
+- (void)setTrackImage:(UIImage *)trackImage {
+    _trackImage = trackImage;
+    [self setNeedsDisplay];
+}
+
 - (void)setText:(NSString *)text {
     _text = text;
     self.textLayer.string = text;
+}
+
+- (void)setProgressImage:(UIImage *)progressImage {
+    _progressImage = progressImage;
+    [self setProgress:self.progress animated:NO];
 }
 
 - (void)setFont:(UIFont *)font {
@@ -146,7 +171,7 @@
 - (CALayer *)imageLayer {
     if (!_imageLayer) {
         _imageLayer = [CALayer layer];
-        _imageLayer.frame = self.bounds;
+        _imageLayer.frame = CGRectMake(0, 0, self.progress * kWidth, kHeight);;
         _imageLayer.contents = (__bridge id)(self.progressImage.CGImage);
         [self addSublayer:_imageLayer];
     }
