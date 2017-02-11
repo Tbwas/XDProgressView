@@ -25,13 +25,12 @@
 @property (nonatomic, strong, nullable) UIFont  *font;
 @property (nonatomic, assign) NSTextAlignment textAlignment;
 
-- (void)setProgress:(float)progress animated:(BOOL)animated;
+- (void)setProgressWithAnimated:(BOOL)animated;
 
 @end
 
 @implementation XDProgressLayer {
     CATextLayer *_textLayer;
-    CAGradientLayer *_gradientLayer;
     CALayer *_imageLayer;
     BOOL _isAnimated;
     BOOL _didLayout;
@@ -76,9 +75,8 @@
     _didLayout = YES;
 }
 
-- (void)setProgress:(float)progress animated:(BOOL)animated {
+- (void)setProgressWithAnimated:(BOOL)animated {
     _isAnimated = animated;
-    _progress = progress > 1.0 ? 1.0 : progress < 0.0 ? 0.0 : progress;
     if (animated) { // implicit animation
         self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
     } else {        // close implicit animation
@@ -87,6 +85,7 @@
         self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
         [CATransaction commit];
     }
+ 
 }
 
 - (void)setTextFont:(UIFont *)font {
@@ -98,11 +97,6 @@
 }
 
 #pragma mark - Property
-- (void)setProgress:(float)progress {
-    _progress = progress > 1.0 ? 1.0 : progress < 0.0 ? 0.0 : progress;
-    [self setNeedsDisplay];
-}
-
 - (void)setTrackImage:(UIImage *)trackImage {
     _trackImage = trackImage;
     [self setNeedsDisplay];
@@ -115,12 +109,12 @@
 
 - (void)setProgressTintColor:(UIColor *)progressTintColor {
     _progressTintColor = progressTintColor;
-    [self setProgress:self.progress animated:NO];
+    self.imageLayer.backgroundColor = self.progressTintColor.CGColor;
 }
 
 - (void)setProgressImage:(UIImage *)progressImage {
     _progressImage = progressImage;
-    [self setProgress:self.progress animated:NO];
+    self.imageLayer.contents = (__bridge id)(self.progressImage.CGImage);
 }
 
 - (void)setFont:(UIFont *)font {
@@ -169,8 +163,6 @@
     if (!_imageLayer) {
         _imageLayer = [CALayer layer];
         _imageLayer.frame = CGRectMake(0, 0, self.progress * kWidth, kHeight);
-        if (self.progressImage) _imageLayer.contents = (__bridge id)(self.progressImage.CGImage);
-        if (self.progressTintColor) _imageLayer.backgroundColor = self.progressTintColor.CGColor;
         [self addSublayer:_imageLayer];
     }
     return _imageLayer;
@@ -187,15 +179,15 @@
 
 - (void)setProgress:(float)progress animated:(BOOL)animated {
     if (_progress == progress) return;
-    [(XDProgressLayer *)self.layer setProgress:progress animated:animated];
+    _progress = progress > 1.0 ? 1.0 : progress < 0.0 ? 0.0 : progress;
+    XDProgressLayer *layer = (XDProgressLayer *)self.layer;
+    layer.progress = _progress;
+    [(XDProgressLayer *)self.layer setProgressWithAnimated:animated];
 }
 
 #pragma mark - Property
 - (void)setProgress:(float)progress {
-    if (_progress == progress) return;
-    _progress = progress;
-    XDProgressLayer *layer = (XDProgressLayer *)self.layer;
-    layer.progress = progress;
+    [self setProgress:progress animated:NO];
 }
 
 - (void)setTextAlignment:(NSTextAlignment)textAlignment {

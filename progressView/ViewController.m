@@ -11,49 +11,44 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) XDProgressView *progressView;
+@property (nonatomic, strong) XDProgressView *customProgressView;
+@property (nonatomic, strong) UIProgressView *systomProgressView;
+@property (nonatomic, assign) CGFloat progress;
 
 @end
 
-@implementation ViewController {
-    UIProgressView *pp;
-    CGFloat _progress;
-}
+@implementation ViewController
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     _progress += 0.05;
-    if (_progressView.progress > 0.99) {
-        _progressView.progress = 0.0;
-    }
-    [pp setProgress:_progress animated:YES];
-    [self.progressView setProgress:_progress animated:NO];
-//    self.progressView.progress += _progress;
-    
+    _systomProgressView.progress = _progress;
+    _customProgressView.progress = _progress;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    _progressView = [[XDProgressView alloc] initWithFrame:(CGRect){0, 0, 200, 30}];
-    _progressView.center = self.view.center;
-    _progressView.progress = 0.3;
-    _progressView.trackImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _systomProgressView = [[UIProgressView alloc] initWithFrame:CGRectMake(100, 100, 200, 30)];
+    CGPoint center = self.view.center;
+    center.y -= 60;
+    _systomProgressView.center = center;
+    _systomProgressView.progress = 0.5;
+    _systomProgressView.progressTintColor = [UIColor greenColor];
+    _systomProgressView.trackTintColor = [UIColor redColor];
+//    _systomProgressView.trackImage = [UIImage imageNamed:@"progressImage"];
+    [self.view addSubview:_systomProgressView];
+    
+    _customProgressView = [[XDProgressView alloc] initWithFrame:(CGRect){0, 0, 200, 30}];
+    _customProgressView.center = self.view.center;
+    _customProgressView.progress = 0.5;
+    _customProgressView.progressTintColor = [UIColor greenColor];
+    _customProgressView.trackTintColor = [UIColor redColor];
+//    _customProgressView.trackImage = [UIImage imageNamed:@"progressImage"];
+    _customProgressView.text = @"xindong";
+    _customProgressView.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:_customProgressView];
 
-//    _progressView.progressImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    _progressView.progressTintColor = [UIColor greenColor];
-//    _progressView.trackTintColor = [UIColor greenColor];
-    _progressView.text = @"xindong";
-    _progressView.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:_progressView];
-    
-#warning -- trackImage and progressImage animated
-    
-    pp = [[UIProgressView alloc] initWithFrame:CGRectMake(100, 100, 200, 30)];
-    pp.progress = 0.4;
-    pp.progressImage = [[UIImage imageNamed:@"progressImage.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    pp.trackTintColor = [UIColor lightGrayColor];
-    [self.view addSubview:pp];
 }
 
 
