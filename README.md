@@ -2,7 +2,7 @@
 Q: XDProgressView和UIProgressView相比有什么不同？
    
 
-A:  1. UIProgressView的下面这两个属性暂时没有去实现，个人觉得可有可无。</br>
+A:  1. UIProgressView的下面这两个属性暂时没有去实现，个人觉得可有可无。除此之外，尽可能和系统原生保持一致。</br>
 
     @property(nonatomic) UIProgressViewStyle progressViewStyle;
     @property(nonatomic, strong, nullable) NSProgress *observedProgress
