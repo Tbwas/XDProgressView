@@ -17,15 +17,13 @@ Pod::Spec.new do |s|
 
   s.name         = "XDProgressView"
   s.version      = "1.0.0"
-  s.summary      = "XDProgressView is similar to the UIPropressView. The difference is that XDProgressView is more flexible when you want to set it's height. In addition, you can also set text on it."
-
+  s.summary      = "XDProgressView is similar to the UIPropressView."
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
   #   * Try to keep it short, snappy and to the point.
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
-  s.description  = <<-DESC
-                   DESC
+  s.description  = "XDProgressView is similar to the UIPropressView. The dif    ference is that XDProgressView is more flexible when you want to set it's height. In addition, you can also set text on it."
 
   s.homepage     = "https://github.com/Tbwas/XDProgressView.git"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
@@ -38,7 +36,7 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   
 
-  s.license      = "MIT (example)"
+  s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
 
 
@@ -89,7 +87,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "XDProgressView/progressView/XDProgressView.{h,m}"
+  s.source_files  = "progressView/XDProgressView/*.{h,m}"
   #s.exclude_files = "XDProgressView/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
