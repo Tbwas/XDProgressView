@@ -11,16 +11,18 @@ A:  1. UIProgressView的下面这两个属性暂时没有去实现，个人觉�
    
 # 安装
 ### 使用CocoaPods
+
+```
+  platform :ios, '8.0'
   
-  
-     source 'https://github.com/Tbwas/XDProgressView.git'
-     platform :ios, '8.0'
+  target 'TargetName' do
+  pod 'XDProgressView'
+  end
+```
      
-     target 'TargetName' do
-     pod 'XDProgressView'
-     end
-     
-     
+若执行命令`pod search XDProgressView`出现以下错误，`[!] Unable to find a pod with name, author, summary, or description matching...`， 
+先执行`rm ~/Library/Caches/CocoaPods/search_index.json`，再执行`pod search XDProgressView`即可。
+     
 ### 直接下载源码
   
      `git clone` 或者 `download`, 将下载好的demo中的`progressView`文件夹下的整个`XDProgressView`文件拖入项目中即可。
