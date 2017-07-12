@@ -25,7 +25,7 @@ A:  1. UIProgressView的下面这两个属性暂时没有去实现，个人觉�
      
 ### 直接下载源码
   
-     `git clone` 或者 `download`, 将下载好的demo中的`progressView`文件夹下的整个`XDProgressView`文件拖入项目中即可。
+`git clone` 或者 `download`, 将下载好的demo中的`progressView`文件夹下的整个`XDProgressView`文件拖入项目中即可。
      
 # 使用
  
