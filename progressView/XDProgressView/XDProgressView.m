@@ -72,6 +72,7 @@
     if (!self.font) self.font = [UIFont systemFontOfSize:17.0];
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
     self.textLayer.frame = (CGRect){0, (kHeight - size.height) / 2, kWidth, size.height};
+    [self setProgressWithAnimated:NO]; // should call the method here when used autolayout.
     _didLayout = YES;
 }
 
