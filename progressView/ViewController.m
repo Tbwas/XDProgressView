@@ -46,6 +46,7 @@
     _customProgressView.trackTintColor = [UIColor redColor];
 //    _customProgressView.trackImage = [UIImage imageNamed:@"progressImage"];
     _customProgressView.text = @"xindong";
+//    _customProgressView.roundedCorner = YES;
     _customProgressView.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_customProgressView];
 

@@ -12,6 +12,8 @@
 #define kWidth  self.frame.size.width
 #define kHeight self.frame.size.height
 
+#pragma mark - XDProgressLayer
+
 @interface XDProgressLayer : CALayer
 
 - (instancetype)initWithFrame:(CGRect)frame;
@@ -29,11 +31,13 @@
 
 @end
 
+
 @implementation XDProgressLayer {
     CATextLayer *_textLayer;
     CALayer *_imageLayer;
     BOOL _isAnimated;
     BOOL _didLayout;
+    BOOL _roundedCorner;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -43,9 +47,33 @@
     return self;
 }
 
+- (void)setProgressWithAnimated:(BOOL)animated {
+    _isAnimated = animated;
+    if (animated) { // implicit animation
+        self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
+    } else {        // close implicit animation
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
+        [CATransaction commit];
+    }
+    
+}
+
+- (void)setTextFont:(UIFont *)font {
+    CFStringRef fontName = (__bridge CFStringRef)font.fontName;
+    CGFontRef fontRef = CGFontCreateWithFontName(fontName);
+    self.textLayer.font = fontRef;
+    self.textLayer.fontSize = font.pointSize;
+    CGFontRelease(fontRef);
+}
+
+
+#pragma mark - Overriden
+
 - (void)display {
     [super display];
-    // TO DO
+    // TODO:
 }
 
 - (void)drawInContext:(CGContextRef)ctx {
@@ -72,32 +100,12 @@
     if (!self.font) self.font = [UIFont systemFontOfSize:17.0];
     CGSize size = [self.text sizeWithAttributes:@{NSFontAttributeName:self.font}];
     self.textLayer.frame = (CGRect){0, (kHeight - size.height) / 2, kWidth, size.height};
-    [self setProgressWithAnimated:NO]; // should call the method here when used autolayout.
+    [self setProgressWithAnimated:NO]; // should call the method here when use autolayout.
     _didLayout = YES;
 }
 
-- (void)setProgressWithAnimated:(BOOL)animated {
-    _isAnimated = animated;
-    if (animated) { // implicit animation
-        self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
-    } else {        // close implicit animation
-        [CATransaction begin];
-        [CATransaction setDisableActions:YES];
-        self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
-        [CATransaction commit];
-    }
- 
-}
-
-- (void)setTextFont:(UIFont *)font {
-    CFStringRef fontName = (__bridge CFStringRef)font.fontName;
-    CGFontRef fontRef = CGFontCreateWithFontName(fontName);
-    self.textLayer.font = fontRef;
-    self.textLayer.fontSize = font.pointSize;
-    CGFontRelease(fontRef);
-}
-
 #pragma mark - Property
+
 - (void)setTrackImage:(UIImage *)trackImage {
     _trackImage = trackImage;
     [self setNeedsDisplay];
@@ -151,6 +159,16 @@
     }
 }
 
+- (void)setRoundedCorner:(NSNumber *)roundedCorner {
+    _roundedCorner = [roundedCorner boolValue];
+    if (!_roundedCorner) return;
+    self.cornerRadius = kHeight / 2.0;
+    self.imageLayer.cornerRadius = kHeight / 2.0;
+    if (self.trackImage) self.masksToBounds = YES;
+}
+
+#pragma mark - Lazy Loading
+
 - (CATextLayer *)textLayer {
     if (!_textLayer) {
         _textLayer = [CATextLayer layer];
@@ -171,12 +189,16 @@
 
 @end
 
+#pragma mark - XDProgressView
 
 @implementation XDProgressView
+
 
 + (Class)layerClass {
     return [XDProgressLayer class];
 }
+
+#pragma mark - Public
 
 - (void)setProgress:(float)progress animated:(BOOL)animated {
     if (_progress == progress) return;
@@ -187,6 +209,7 @@
 }
 
 #pragma mark - Property
+
 - (void)setProgress:(float)progress {
     [self setProgress:progress animated:NO];
 }
@@ -206,6 +229,7 @@
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
 - (void)setProgressTintColor:(UIColor *)progressTintColor {
     if (_progressTintColor == progressTintColor) return;
     _progressTintColor = progressTintColor;
@@ -241,6 +265,13 @@
     _font = font;
     [self.layer performSelector:_cmd withObject:font];
 }
+
+- (void)setRoundedCorner:(BOOL)roundedCorner {
+    if (_roundedCorner == roundedCorner) return;
+    _roundedCorner = roundedCorner;
+    [self.layer performSelector:_cmd withObject:@(roundedCorner)];
+}
+
 #pragma clang diagnostic pop
 
 @end
