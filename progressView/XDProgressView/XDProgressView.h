@@ -1,6 +1,6 @@
 //
 //  XDProgressView.h
-//  practice
+//  XDProgressView
 //
 //  Created by xindong on 17/2/9.
 //  Copyright © 2017年 xindong. All rights reserved.
@@ -33,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Both XDProgressView and progress bar present rounded corner style.
 @property (nonatomic, assign) BOOL roundedCorner;
+
+/// The animation duration when call `setProgress:animated:` method and set animated parameter value to YES. Default value is 1/4s.
+@property (nonatomic, assign) CFTimeInterval animationDuration;
 
 /// Adjusts the current progress shown by the receiver, optionally animating the change.
 - (void)setProgress:(float)progress animated:(BOOL)animated;

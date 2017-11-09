@@ -1,11 +1,11 @@
 
 //
 //  XDProgressView.m
-//  practice
+//  XDProgressView
 //
 //  Created by xindong on 17/2/9.
 //  Copyright © 2017年 xindong. All rights reserved.
-//
+//  @See: https://github.com/Tbwas/XDProgressView
 
 #import "XDProgressView.h"
 
@@ -15,8 +15,6 @@
 #pragma mark - XDProgressLayer
 
 @interface XDProgressLayer : CALayer
-
-- (instancetype)initWithFrame:(CGRect)frame;
 
 @property (nonatomic, assign) float progress;
 @property (nonatomic, strong, nullable) UIColor *progressTintColor;
@@ -31,33 +29,35 @@
 
 @end
 
-
 @implementation XDProgressLayer {
     CATextLayer *_textLayer;
     CALayer *_imageLayer;
     BOOL _isAnimated;
     BOOL _didLayout;
     BOOL _roundedCorner;
+    CFTimeInterval _animationDuration;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)init {
     if (self = [super init]) {
-        self.frame = frame;
+        _animationDuration = 1 / 4.0;
     }
     return self;
 }
 
 - (void)setProgressWithAnimated:(BOOL)animated {
     _isAnimated = animated;
-    if (animated) { // implicit animation
+    if (animated) {
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:_animationDuration];
         self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
-    } else {        // close implicit animation
+        [CATransaction commit];
+    } else {
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
         self.imageLayer.frame = CGRectMake(0, 0, _progress * kWidth, kHeight);
         [CATransaction commit];
     }
-    
 }
 
 - (void)setTextFont:(UIFont *)font {
@@ -67,7 +67,6 @@
     self.textLayer.fontSize = font.pointSize;
     CGFontRelease(fontRef);
 }
-
 
 #pragma mark - Overriden
 
@@ -167,6 +166,11 @@
     if (self.trackImage) self.masksToBounds = YES;
 }
 
+- (void)setAnimationDuration:(NSNumber *)animationDuration {
+    CFTimeInterval duration = [animationDuration doubleValue];
+    _animationDuration = duration < 0.0 ? 0.0 : duration;
+}
+
 #pragma mark - Lazy Loading
 
 - (CATextLayer *)textLayer {
@@ -192,7 +196,6 @@
 #pragma mark - XDProgressView
 
 @implementation XDProgressView
-
 
 + (Class)layerClass {
     return [XDProgressLayer class];
@@ -270,6 +273,12 @@
     if (_roundedCorner == roundedCorner) return;
     _roundedCorner = roundedCorner;
     [self.layer performSelector:_cmd withObject:@(roundedCorner)];
+}
+
+- (void)setAnimationDuration:(CFTimeInterval)animationDuration {
+    if (_animationDuration == animationDuration) return;
+    _animationDuration = animationDuration;
+    [self.layer performSelector:_cmd withObject:@(animationDuration)];
 }
 
 #pragma clang diagnostic pop

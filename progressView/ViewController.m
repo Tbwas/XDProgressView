@@ -23,6 +23,9 @@
     _progress += 0.05;
     _systomProgressView.progress = _progress;
     _customProgressView.progress = _progress;
+    if (_progress > 0.95) {
+        _progress = 0.0;
+    }
 }
 
 - (void)viewDidLoad {
@@ -44,9 +47,10 @@
     _customProgressView.progress = 0.5;
     _customProgressView.progressTintColor = [UIColor greenColor];
     _customProgressView.trackTintColor = [UIColor redColor];
-//    _customProgressView.trackImage = [UIImage imageNamed:@"progressImage"];
     _customProgressView.text = @"xindong";
+//    _customProgressView.trackImage = [UIImage imageNamed:@"progressImage"];
 //    _customProgressView.roundedCorner = YES;
+//    _customProgressView.animationDuration = 1.0;
     _customProgressView.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_customProgressView];
 
